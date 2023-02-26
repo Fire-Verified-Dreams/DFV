@@ -41,12 +41,12 @@ scene("game", () => {
 		"                           ",
 		"                           ",
 		"							",
+		"              000         ",
 		"                           ",
 		"                           ",
 		"                           ",
 		"                           ",
-		"                           ",
-		"-=========================!",
+		"-=======!  -==============!",
 	], {
 		// define the size of each block
 		width: 64,
@@ -55,6 +55,14 @@ scene("game", () => {
 		"-": () => [
 			sprite("tiles",{
 				frame:0
+			}),
+			scale(4),
+			area(),
+			solid(),
+		],
+		"0": () => [
+			sprite("tiles",{
+				frame:6
 			}),
 			scale(4),
 			area(),
@@ -89,13 +97,14 @@ scene("game", () => {
 		scale(2)
 
 	])
-	
+	// runs code constantly on this player
 	player.onUpdate(()=> {
 		camPos(player.pos)
 		
-		
-		
 	})
+	//////////
+	//MOVEMENT
+	//////////
 	//jump
 	onKeyPress("space",()=>{
 		player.jump()
@@ -103,7 +112,10 @@ scene("game", () => {
 	})
 	//left
 	onKeyPress("a",()=>{
+		body()
+		area()
 		player.scale.x=-2;
+		
 		player.play("run")
 	})
 	onKeyDown("a", () => {
@@ -142,7 +154,7 @@ scene("begin", () => {
 	  go("game");
 	});
   });
-
+//starts the scene 
   go("begin");
 
  
