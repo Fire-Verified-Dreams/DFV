@@ -43,10 +43,10 @@ scene("game", () => {
 		"							",
 		"              000         ",
 		"                           ",
-		"                           ",
-		"                           ",
-		"                           ",
-		"-=======!  -==============!",
+		"                      ^    ",
+		"                      |     ",
+		"    #           .     *  # ",
+		"-=======! = -==============!",
 	], {
 		// define the size of each block
 		width: 64,
@@ -59,6 +59,46 @@ scene("game", () => {
 			scale(4),
 			area(),
 			solid(),
+		],
+		"#": () => [
+			sprite("tiles",{
+				frame:48
+			}),
+			scale(4),
+			area(),
+			
+		],
+		".": () => [
+			sprite("tiles",{
+				frame:47
+			}),
+			scale(4),
+			area(),
+			
+		],
+		"^": () => [
+			sprite("tiles",{
+				frame:23
+			}),
+			scale(4),
+			area(),
+			
+		],
+		"|": () => [
+			sprite("tiles",{
+				frame:30
+			}),
+			scale(4),
+			area(),
+			
+		],
+		"*": () => [
+			sprite("tiles",{
+				frame:37
+			}),
+			scale(4),
+			area(),
+			
 		],
 		"0": () => [
 			sprite("tiles",{
@@ -94,7 +134,7 @@ scene("game", () => {
 		area(),
 		pos(center()),
 		body(),
-		scale(2)
+		scale(2.5)
 
 	])
 	// runs code constantly on this player
@@ -114,12 +154,12 @@ scene("game", () => {
 	onKeyPress("a",()=>{
 		body()
 		area()
-		player.scale.x=-2;
+		player.scale.x=-2.5;
 		
-		player.play("run")
+		
 	})
 	onKeyDown("a", () => {
-	
+		player.play("run")
 		player.move(-200, 0)
 		
 		
@@ -127,13 +167,13 @@ scene("game", () => {
 	})
 	//right
 	onKeyPress("d",()=>{
-		player.scale.x=2;
-		player.play("run")
+		player.scale.x=2.5;
+		
 	})
 	onKeyDown("d", () => {
-		
+		player.move(200,0)
 		player.play("run")
-		player.move(200, 0)
+		
 	
 		
 	})
@@ -155,6 +195,6 @@ scene("begin", () => {
 	});
   });
 //starts the scene 
-  go("begin");
+  go("game");
 
  
