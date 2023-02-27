@@ -8,3 +8,7 @@ canvas{
     outline: auto;
     border:40px solid black"
 }
+
+body{
+    background-color: black;
+}

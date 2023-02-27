@@ -30,27 +30,30 @@ loadSprite("tiles","../sprites/nature/tileset.png",{
 	sliceX:7,
 	sliceY:11,
 })
+
+loadSprite("cloud","../sprites/mario/cloud.png")
+loadAseprite("enemies", "../sprites/mario/enemies.png", "../sprites/mario/enemies.json");
 scene("game", () => {
 	
 	addLevel([
-		"                           ",
-		"                           ",
-		"                           ",
-		"                           ",
-		"                           ",
-		"                           ",
+		"         ;             ;     ",
+		"      ;            ;     ;    ",
+		"             ;       ;       ",
+		"                ;       ;    ",
+		"       ;                    ",
+		"                   ;        ",
 		"                           ",
 		"							",
-		"              000         ",
+		"              000          ",
 		"                           ",
-		"                      ^    ",
+		"       E              ^    ",
 		"                      |     ",
-		"    #           .     *  # ",
+		"    #         E  .    *  # ",
 		"-=======! = -==============!",
 	], {
 		// define the size of each block
-		width: 64,
-		height: 64,
+		width: 60,
+		height: 60,
 		// define what each symbol means, by a function returning a component list (what will be passed to add())
 		"-": () => [
 			sprite("tiles",{
@@ -59,6 +62,25 @@ scene("game", () => {
 			scale(4),
 			area(),
 			solid(),
+		],
+		"E": () => [
+    	sprite("enemies",{anim:"Walking"}),
+    	area({ width: 16, height: 16 }),
+    	body(),
+		area(),
+		scale(2),
+		// patrol(50),
+		// enemy(),
+		// origin("bot"),
+		// "badGuy"
+		],
+		";": () => [
+			sprite("cloud",{
+				frame:0
+			}),
+			scale(4),
+			area(),
+			
 		],
 		"#": () => [
 			sprite("tiles",{
@@ -141,6 +163,7 @@ scene("game", () => {
 	player.onUpdate(()=> {
 		camPos(player.pos)
 		
+		
 	})
 	//////////
 	//MOVEMENT
@@ -152,8 +175,7 @@ scene("game", () => {
 	})
 	//left
 	onKeyPress("a",()=>{
-		body()
-		area()
+		
 		player.scale.x=-2.5;
 		
 		
@@ -167,12 +189,14 @@ scene("game", () => {
 	})
 	//right
 	onKeyPress("d",()=>{
+		player.play("run")
 		player.scale.x=2.5;
 		
 	})
 	onKeyDown("d", () => {
+		
 		player.move(200,0)
-		player.play("run")
+		
 		
 	
 		
@@ -194,7 +218,25 @@ scene("begin", () => {
 	  go("game");
 	});
   });
+///GAME OVER
+scene("game_over", () => {
+	add([
+	  text("You have lost!", { size: 64 }),
+	  pos(350,200),
+	  color(255, 255, 255),
+	]);
+	add([
+		text("Press enter to start again", { size: 24 }),
+		pos(450 ,300),
+		color(255, 255, 255),
+	  ]);
+  
+	onKeyRelease("enter", () => {
+	  go("game");
+	});
+  });
+
 //starts the scene 
-  go("game");
+go("game_over");
 
  
