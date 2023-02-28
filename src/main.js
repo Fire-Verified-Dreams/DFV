@@ -11,6 +11,7 @@ kaboom({
 
 //variables
 
+
 let badGuys = get("bad");
 
 //LOADING ASSETS
@@ -38,14 +39,28 @@ loadSprite("tiles", "../sprites/nature/tileset.png", {
 })
 
 loadSprite("cloud", "../sprites/mario/cloud.png")
+loadSprite("mountains", "../sprites/bg/mountains.png")
+loadSprite("sky", "../sprites/bg/sky.png")
 loadAseprite("enemies", "../sprites/mario/enemies.png", "../sprites/mario/enemies.json");
 loadSound("death","../sounds/death.mp3")
+loadSound("jump","../sounds/jump.mp3")
+loadSound("hurt","../sounds/hurt.mp3")
 
 ///////////
 //LEVEL 1//
 ///////////
-scene("level1", () => {
 
+scene("level1", () => {
+	const fallThreshold = height() + 400;
+	const bgLayer1 = add([
+		sprite("sky"),
+		pos(-700,-500),
+		scale(12),
+		layer("bg"),
+		{
+		  speed: 0.2
+		}
+	  ]);
 	addLevel([
 		"         ;             ;            ",
 		"      ;            ;     ;          ",
@@ -57,12 +72,13 @@ scene("level1", () => {
 		"									 ",
 		"              000          		 ",
 		"                             		 ",
-		"                      ^    		 ",
-		"                      |     		 ",
-		"    #  E       E  .   *  # 	E	 ",
-		"-=======! = -======================!",
-		",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
-	], {
+		"                       ^    		 ",
+		"                       |     		 ",
+		"    #  E       E  .    *  # 	E	 ",
+		"-======! = -========!  -============!",
+		",,,,,,,, , ,,,,,,,,,,  ,,,,,,,,,,,,,,",
+	],
+	{
 		// define the size of each block
 		width: 60,
 		height: 60,
@@ -181,11 +197,28 @@ scene("level1", () => {
 			dir: 1.5 // add a dir property to the player entity
 		}
 	])
+	
+	  
+	//   const bgLayer2 = add([
+	// 	sprite("bg-layer2"),
+	// 	pos(0, 0),
+	// 	scale(2),
+	// 	layer("bg"),
+	// 	{
+	// 	  speed: 0.4
+	// 	}
+	//   ]);
+	  
+	  // move the background layers based on their speed property
+	  action("bg", (bg) => {
+		bg.move(-bg.speed, 0);
+	  });
 	// runs code constantly on this player
 	player.onUpdate(() => {
 		camPos(player.pos)
-		area()
-		body()
+		if (player.pos.y > fallThreshold){
+			player.hurt(3);
+		}
 
 	})
 	//////////
@@ -194,7 +227,7 @@ scene("level1", () => {
 	//jump
 	onKeyPress("space", () => {
 		player.jump()
-
+		play("jump")
 	})
 	//left
 	onKeyPress("a", () => {
@@ -223,9 +256,10 @@ scene("level1", () => {
 
 	//logic
 	//wait is used to delay how many times the on collide is checking
-
+	
 	player.onCollide("bad", (bad) => {
 		if (!player.invincible) {
+			// play("hurt")
 			player.hurt(1);
 			makeInvincible(player);
 		  }
@@ -249,7 +283,7 @@ scene("level1", () => {
 		  });
 		});
 	}
-
+	
 	player.on("death", () => {
 		play("death")
 		destroy(player)
@@ -274,7 +308,7 @@ scene("begin", () => {
 	]);
 
 	onKeyRelease("enter", () => {
-		go("game");
+		go("level1");
 	});
 });
 ///GAME OVER
@@ -296,5 +330,10 @@ scene("game_over", () => {
 });
 
 //starts the scene 
-go("level1");
+go("begin");
+
+
+//////////////////
+//HELPER FUNCTIONS
+//////////////////
 
