@@ -10,8 +10,6 @@ kaboom({
 });
 
 //variables
-
-
 let badGuys = get("bad");
 
 //LOADING ASSETS
@@ -54,29 +52,29 @@ scene("level1", () => {
 	const fallThreshold = height() + 400;
 	const bgLayer1 = add([
 		sprite("sky"),
-		pos(-700,-500),
-		scale(12),
+		pos(-700,-350),
+		scale(11),
 		layer("bg"),
-		{
-		  speed: 0.2
-		}
-	  ]);
+		// {
+		//   speed: 0.2
+		// }
+	  ])
 	addLevel([
-		"         ;             ;            ",
-		"      ;            ;     ;          ",
-		"             ;       ;              ",
-		"                ;       ;           ",
-		"       ;                            ",
-		"                   ;       	     ",
-		"               E            	     ",
-		"									 ",
-		"              000          		 ",
-		"                             		 ",
-		"                       ^    		 ",
-		"                       |     		 ",
-		"    #  E       E  .    *  # 	E	 ",
-		"-======! = -========!  -============!",
-		",,,,,,,, , ,,,,,,,,,,  ,,,,,,,,,,,,,,",
+		"          ;                           ;  ",
+		"      ;                      ;           ",
+		"             ;                    ;      ",
+		"                                         ",
+		"  ;     ;                                ",
+		"                      000    	   ;      ",
+		"    ;           E            	          ",
+		"				 					      ",
+		"              000          		      ",
+		"                             		      ",
+		"  ^                     ^    		      ",
+		"  |                     |     	E	      ",
+		" .*  #   E  .    E  .   *  #  -=!	.  #  ",
+		"-======! = -========!  -======,,,=======!",
+		",,,,,,,, , ,,,,,,,,,,  ,,,,,,,,,,,,,,,,,,",
 	],
 	{
 		// define the size of each block
@@ -104,7 +102,7 @@ scene("level1", () => {
 			body(),
 			scale(2.5),
 			health(1),
-			// patrol(50),
+			patrol(),
 			// enemy(),
 			"bad"
 		],
@@ -189,7 +187,7 @@ scene("level1", () => {
 		}),
 		health(3),
 		area(),
-		pos(center()),
+		pos(50,650),
 		body(),
 		scale(2),
 		{
@@ -213,7 +211,7 @@ scene("level1", () => {
 	  action("bg", (bg) => {
 		bg.move(-bg.speed, 0);
 	  });
-	// runs code constantly on this player
+	// runs code constantly on the player
 	player.onUpdate(() => {
 		camPos(player.pos)
 		if (player.pos.y > fallThreshold){
@@ -226,8 +224,13 @@ scene("level1", () => {
 	//////////
 	//jump
 	onKeyPress("space", () => {
+		if(player.isColliding){
 		player.jump()
 		play("jump")
+		}
+		else{
+			
+		}
 	})
 	//left
 	onKeyPress("a", () => {
@@ -264,25 +267,7 @@ scene("level1", () => {
 			makeInvincible(player);
 		  }
 	})
-	function makeInvincible(player) {
-		let playerColor = player.playerColor
-		player.invincible = true;
-		player.hidden = true;
-		wait(0.1, () => {
-		  player.hidden = false;
-		  player.color = RED;
-		  wait(0.1, () => {
-			player.hidden = true;
-			wait(0.1, () => {
-			  player.hidden = false;
-			  wait(0.1, () => {
-				player.invincible = false;
-				player.color = playerColor;
-			  });
-			});
-		  });
-		});
-	}
+	
 	
 	player.on("death", () => {
 		play("death")
@@ -337,3 +322,41 @@ go("begin");
 //HELPER FUNCTIONS
 //////////////////
 
+function badGuyMovement(){
+
+}
+function patrol(speed = 30, dir = 1) {
+	return {
+		id: "patrol",
+		add() {
+			this.on("collide", (obj, col) => {
+				if (col.isLeft() || col.isRight()) {
+					dir = -dir
+				}
+			})
+		},
+		update() {
+			this.move(speed * dir, 0)
+		},
+	}
+}
+
+function makeInvincible(player) {
+	let playerColor = player.playerColor
+	player.invincible = true;
+	player.hidden = true;
+	wait(0.1, () => {
+	  player.hidden = false;
+	  player.color = RED;
+	  wait(0.1, () => {
+		player.hidden = true;
+		wait(0.1, () => {
+		  player.hidden = false;
+		  wait(0.1, () => {
+			player.invincible = false;
+			player.color = playerColor;
+		  });
+		});
+	  });
+	});
+}
