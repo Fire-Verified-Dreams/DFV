@@ -723,7 +723,7 @@ scene("begin", () => {
 		color(0, 255, 0),
 	]);
 	add([
-		text("WASD to control movement", { size: 24 }),
+		text("A and D to control movement", { size: 24 }),
 		pos(450, 500),
 		color(0, 255, 0),
 	]);
@@ -766,7 +766,6 @@ scene("game_won", () => {
 		move(0, -height() / 8,),
 		scale(1, 1,),
 	]);
-
 	add([
 		text("Press enter to play again!", { size: 24 }),
 		pos(width() / 2, height() * 3 / 4),
@@ -806,7 +805,6 @@ function patrol(speed = 30, dir = 1) {
 		},
 	}
 }
-
 function makeInvincible(player) {
 	let playerColor = player.playerColor
 	player.invincible = true;
