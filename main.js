@@ -1,4 +1,4 @@
-import kaboom from "../node_modules/kaboom/dist/kaboom"
+import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
 
 kaboom({
 	width: 1280,
@@ -14,7 +14,7 @@ let numJumps = 0;
 
 
 //LOADING ASSETS
-loadSprite("knight", "../sprites/Knight/Idle/Idle-Sheet.png", {
+loadSprite("knight", "./sprites/Knight/Idle/Idle-Sheet.png", {
 	sliceX: 4,
 	anims: {
 		idle: {
@@ -23,8 +23,8 @@ loadSprite("knight", "../sprites/Knight/Idle/Idle-Sheet.png", {
 		}
 	},
 })
-loadSprite("portal", "../sprites/portal2.gif")
-loadSprite("run", "../sprites/Knight/Run/run-sheet2.png", {
+loadSprite("portal", "./sprites/portal2.gif")
+loadSprite("run", "./sprites/Knight/Run/run-sheet2.png", {
 	sliceX: 6,
 	anims: {
 		run: {
@@ -33,38 +33,38 @@ loadSprite("run", "../sprites/Knight/Run/run-sheet2.png", {
 		}
 	},
 })
-loadSprite("tiles", "../sprites/nature/tileset.png", {
+loadSprite("tiles", "./sprites/nature/tileset.png", {
 	sliceX: 7,
 	sliceY: 11,
 })
 
-loadSprite("shadow", "../sprites/bg/shadow.png", {
+loadSprite("shadow", "./sprites/bg/shadow.png", {
 	sliceX: 7,
 	sliceY: 11,
 })
 
 
-loadSprite("start_bg", "../sprites/start.png")
+loadSprite("start_bg", "./sprites/start.png")
 
-loadSprite("cloud", "../sprites/mario/cloud.png")
-loadSprite("mountains", "../sprites/bg/mountains.png")
-loadSprite("sky", "../sprites/bg/sky.png")
-loadSprite("stars", "../sprites/bg/space.png")
-loadAseprite("enemies", "../sprites/mario/enemies.png", "../sprites/mario/enemies.json");
-loadSound("death", "../sounds/death.mp3")
-loadSound("jump", "../sounds/jump.mp3")
-loadSound("hurt", "../sounds/hurt.mp3")
-loadSound("start", "../sounds/game-start.mp3")
-loadSound("background_music", "../sounds/background_music.mp3")
+loadSprite("cloud", "./sprites/mario/cloud.png")
+loadSprite("mountains", "./sprites/bg/mountains.png")
+loadSprite("sky", "./sprites/bg/sky.png")
+loadSprite("stars", "./sprites/bg/space.png")
+loadAseprite("enemies", "./sprites/mario/enemies.png", "./sprites/mario/enemies.json");
+loadSound("death", "./sounds/death.mp3")
+loadSound("jump", "./sounds/jump.mp3")
+loadSound("hurt", "./sounds/hurt.mp3")
+loadSound("start", "./sounds/game-start.mp3")
+loadSound("background_music", "./sounds/background_music.mp3")
 
 loadSprite("bg", "sprites/bg.png");
 loadSprite("lavaland", "sprites/lavaland.png");
 loadSprite("rock", "sprites/rock.png");
 loadSprite("skull", "sprites/skull.png");
 
-loadSprite("fullHealth", "../sprites/fullHealth.png");
-loadSprite("halfHealth", "../sprites/halfHealth.png");
-loadSprite("oneHealth", "../sprites/oneHealth.png");
+loadSprite("fullHealth", "./sprites/fullHealth.png");
+loadSprite("halfHealth", "./sprites/halfHealth.png");
+loadSprite("oneHealth", "./sprites/oneHealth.png");
 
 ///////////
 //LEVEL 1//
