@@ -1,4 +1,4 @@
-import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
+import kaboom from "kaboom"
 
 kaboom({
 	width: 1280,
