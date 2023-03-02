@@ -44,6 +44,8 @@ loadSprite("shadow", "../sprites/bg/shadow.png", {
 })
 
 
+loadSprite("start_bg", "../sprites/start.png")
+
 loadSprite("cloud", "../sprites/mario/cloud.png")
 loadSprite("mountains", "../sprites/bg/mountains.png")
 loadSprite("sky", "../sprites/bg/sky.png")
@@ -300,7 +302,6 @@ scene("level1", () => {
 			destroy(d);
 		}
 		else if (!player.invincible) {
-			console.log(player)
 			play("hurt")
 			player.hurt();
 			makeInvincible(player);
@@ -313,7 +314,6 @@ scene("level1", () => {
 			destroy(d);
 		}
 		else if (!player.invincible) {
-			console.log(player)
 			play("hurt")
 			player.hurt();
 			makeInvincible(player);
@@ -333,15 +333,6 @@ scene("level1", () => {
 
 scene("level2", () => {
 	const fallThreshold = height() + 400;
-
-	
-	let hp = add([
-		sprite("fullHealth"),
-		pos(0, 0),
-		scale(0.2),
-		fixed(),
-		layer("ui")
-	])
 	addLevel([
 		"                           ",
 		"l                           ",
@@ -419,7 +410,13 @@ scene("level2", () => {
 			],
 
 		})
-
+	let hp = add([
+		sprite("fullHealth"),
+		pos(0, 0),
+		scale(0.2),
+		fixed(),
+		layer("ui")
+	])
 	const player = add([
 		sprite("run", {
 			frame: 0
@@ -504,7 +501,6 @@ scene("level2", () => {
 			destroy(d);
 		}
 		else if (!player.invincible) {
-			console.log(player)
 			play("hurt")
 			player.hurt();
 			makeInvincible(player);
@@ -517,7 +513,6 @@ scene("level2", () => {
 			destroy(d);
 		}
 		else if (!player.invincible) {
-			console.log(player)
 			play("hurt")
 			player.hurt();
 			makeInvincible(player);
@@ -579,7 +574,10 @@ scene("level3", () => {
 			// define what each symbol means, by a function returning a component list (what will be passed to add())
 			"9": () => [
 				sprite("portal"),
-				scale(.75)
+				scale(.75),
+				area(),
+				body(),
+				"portal"
 
 			],
 			"E": () => [
@@ -652,17 +650,10 @@ scene("level3", () => {
 	//////////
 	//jump
 
-
-	// player.onUpdate(() => {
-
-
-	// });
 	player.onCollide("ground", () => {
 		numJumps = 0;
 	})
-
 	onKeyPress("space", () => {
-
 		if (numJumps < 2) {
 			player.jump(-350);
 			play("jump");
@@ -686,11 +677,8 @@ scene("level3", () => {
 	onKeyDown("d", () => {
 		player.move(350, 0)
 	})
-
-
 	//logic
 	//wait is used to delay how many times the on collide is checking
-
 	player.onCollide("bad", (d) => {
 		if (!player.isGrounded()) {
 			player.jump
@@ -698,16 +686,11 @@ scene("level3", () => {
 			destroy(d);
 		}
 		else if (!player.invincible) {
-
-			console.log(player)
 			play("hurt")
 			player.hurt();
 			makeInvincible(player);
 		}
-
-
 	})
-
 	player.on("death", () => {
 		play("death")
 		destroy(player)
@@ -715,14 +698,16 @@ scene("level3", () => {
 	})
 
 	player.onCollide("portal", () => {
-		go("win")
-
+		go("game_won")
 	})
-
-
 });
 
 scene("begin", () => {
+	const bgLayer1 = add([
+		sprite("start_bg"),
+		layer("bg"),
+		scale(3.8)
+	])
 	play("background_music", {
 		loop: true,
 		volume: 0.3
@@ -737,6 +722,17 @@ scene("begin", () => {
 		pos(450, 300),
 		color(0, 255, 0),
 	]);
+	add([
+		text("WASD to control movement", { size: 24 }),
+		pos(450, 500),
+		color(0, 255, 0),
+	]);
+	add([
+		text("Space to Jump", { size: 24 }),
+		pos(500, 550),
+		color(0, 255, 0),
+	]);
+
 	onKeyRelease("enter", () => {
 		go("level1");
 	});
@@ -747,20 +743,42 @@ scene("game_over", () => {
 	add([
 		text("You have lost!", { size: 64 }),
 		pos(320, 200),
-		color(255, 255, 255),
+		color(255, 0, 0),
 	]);
 	add([
 		text("Press enter to start again", { size: 24 }),
 		pos(400, 300),
-		color(255, 255, 255),
+		color(255, 0, 0),
 	]);
 
 	onKeyRelease("enter", () => {
 		go("level1");
 	});
 });
+///GAME WON
+scene("game_won", () => {
+	add([
+		text("You win!", { size: 64 }),
+		pos(width() / 2, height() / 4),
+		origin("center"),
+		color(0, 255, 0),
+		scale(0.1),
+		move(0, -height() / 8,),
+		scale(1, 1,),
+	]);
 
-//starts the scene 
+	add([
+		text("Press enter to play again!", { size: 24 }),
+		pos(width() / 2, height() * 3 / 4),
+		origin("center"),
+		color(255, 255, 255),
+	]);
+	onKeyRelease("enter", () => {
+		go("begin")
+	});
+});
+
+//starts the game 
 go("begin");
 
 
@@ -810,19 +828,3 @@ function makeInvincible(player) {
 		});
 	});
 }
-
-
-
-/*
-To Do 
-
-how to play page 
-
-maybe pause button 
-
-
-___advanced
-
-
-
-*/
